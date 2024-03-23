@@ -1,9 +1,8 @@
 package com.neonlab.loginservice.apis;
 
 import com.mysql.cj.util.StringUtils;
-import com.neonlab.common.dto.AuthUserDto;
 import com.neonlab.common.dto.Authenticationdto;
-import com.neonlab.common.dto.VerificationReqDto;
+import com.neonlab.loginservice.service.SendOtpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,19 +10,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OtpApi {
+public class OtpSendApi {
 
-    private final SendOtpApi sendOtpApi;
-    private final VerifyOtpApi verifyOtpApi;
+    private final SendOtpService sendOtpService;
 
     public String send(Authenticationdto authenticationdto){
         validateRequest(authenticationdto);
-        return sendOtpApi.send(authenticationdto);
-    }
-
-    public AuthUserDto verify(VerificationReqDto verificationReqDto){
-        validateRequest(verificationReqDto);
-        return verifyOtpApi.verify(verificationReqDto);
+        return sendOtpService.send(authenticationdto);
     }
 
     //ToDO: create these in Abstract Api
@@ -32,18 +25,6 @@ public class OtpApi {
             throw new RuntimeException("Purpose is Required");
         }
         if(StringUtils.isNullOrEmpty(authenticationdto.getPhoneNo()) && StringUtils.isNullOrEmpty(authenticationdto.getEmail())){
-            throw new RuntimeException("Phone or Email is Required");
-        }
-    }
-
-    private void validateRequest(VerificationReqDto verificationReqDto) {
-        if(StringUtils.isNullOrEmpty(verificationReqDto.getOtp())){
-            throw new RuntimeException("Otp is Required");
-        }
-        if(StringUtils.isNullOrEmpty(verificationReqDto.getVerificationPurpose())){
-            throw new RuntimeException("Purpose is Required");
-        }
-        if(StringUtils.isNullOrEmpty(verificationReqDto.getPhoneNo()) && StringUtils.isNullOrEmpty(verificationReqDto.getEmail())){
             throw new RuntimeException("Phone or Email is Required");
         }
     }

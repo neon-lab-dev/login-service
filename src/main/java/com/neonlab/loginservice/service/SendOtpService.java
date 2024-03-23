@@ -1,4 +1,4 @@
-package com.neonlab.loginservice.apis;
+package com.neonlab.loginservice.service;
 
 import com.mysql.cj.util.StringUtils;
 import com.neonlab.common.config.Constants;
@@ -24,7 +24,7 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
-public class SendOtpApi {
+public class SendOtpService {
 
     private final SystemConfigRepository systemConfigRepository;
     private final OtpRepository otpRepository;

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OtpRepository extends JpaRepository<Otp, String> {
 
-    Otp findFirstByCommunicatedToAndStatusOrderByCreatedAt(String communicatedTo, String status);
+    Otp findFirstByCommunicatedToAndStatusOrderByCreatedAtDesc(String communicatedTo, String status);
 
 }

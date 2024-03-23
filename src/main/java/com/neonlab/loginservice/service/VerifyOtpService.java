@@ -1,7 +1,8 @@
-package com.neonlab.loginservice.apis;
+package com.neonlab.loginservice.service;
 
 import com.neonlab.common.dto.AuthUserDto;
 import com.neonlab.common.dto.VerificationReqDto;
+import com.neonlab.loginservice.apis.SignUpApi;
 import com.neonlab.loginservice.entity.Otp;
 import com.neonlab.loginservice.repository.OtpRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.Date;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class VerifyOtpApi {
+public class VerifyOtpService {
 
     private final OtpRepository otpRepository;
     private final SignUpApi signUpApi;

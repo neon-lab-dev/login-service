@@ -85,5 +85,7 @@ CREATE TABLE user (
 CREATE INDEX idx_primary_phone ON user (primary_phone_no);
 CREATE INDEX idx_email ON user (email);
 
+ALTER TABLE user MODIFY primary_phone_no VARCHAR(255);
+
 
 
