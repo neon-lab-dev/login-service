@@ -1,20 +1,19 @@
 package com.neonlab.loginservice.apis;
 
 import com.mysql.cj.util.StringUtils;
-import com.neonlab.loginservice.dto.AuthUserDto;
-import com.neonlab.loginservice.dto.VerificationReqDto;
+import com.neonlab.common.dto.AuthUserDto;
+import com.neonlab.common.dto.VerificationReqDto;
+import com.neonlab.common.utils.UUIDEncryptor;
 import com.neonlab.loginservice.entity.AuthUser;
 import com.neonlab.loginservice.entity.User;
 import com.neonlab.loginservice.repository.AuthUserRepository;
 import com.neonlab.loginservice.repository.UserRepository;
-import com.neonlab.loginservice.util.UUIDEncryptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Objects;
 
 @Service
 @Slf4j

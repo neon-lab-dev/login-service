@@ -1,23 +1,20 @@
 package com.neonlab.loginservice.apis;
 
 import com.mysql.cj.util.StringUtils;
-import com.neonlab.loginservice.config.Constants;
-import com.neonlab.loginservice.dto.AuthUserDto;
-import com.neonlab.loginservice.dto.Authenticationdto;
-import com.neonlab.loginservice.dto.VerificationReqDto;
+import com.neonlab.common.config.Constants;
+import com.neonlab.common.dto.*;
+import com.neonlab.common.dto.EmailProvider;
+import com.neonlab.common.dto.SMSProvider;
+import com.neonlab.common.utils.DateUtils;
+import com.neonlab.common.utils.OtpUtil;
 import com.neonlab.loginservice.entity.Otp;
 import com.neonlab.loginservice.entity.SystemConfig;
-import com.neonlab.loginservice.model.enums.EmailProvider;
-import com.neonlab.loginservice.model.enums.SMSProvider;
-import com.neonlab.loginservice.model.enums.SmsRequest;
 import com.neonlab.loginservice.repository.OtpRepository;
 import com.neonlab.loginservice.repository.SystemConfigRepository;
 import com.neonlab.loginservice.service.email.EmailService;
 import com.neonlab.loginservice.service.email.EmailServiceFactory;
 import com.neonlab.loginservice.service.sms.SmsService;
 import com.neonlab.loginservice.service.sms.SmsServiceFactory;
-import com.neonlab.loginservice.util.DateUtils;
-import com.neonlab.loginservice.util.OtpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +32,6 @@ public class OtpApi {
     private final OtpRepository otpRepository;
     private final SignUpApi signUpApi;
 
-    @Transactional
     public String sendOtp(Authenticationdto authenticationdto) {
 
         Otp otpEntity = new Otp();

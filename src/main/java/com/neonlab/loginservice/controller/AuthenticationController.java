@@ -1,9 +1,9 @@
 package com.neonlab.loginservice.controller;
 
+import com.neonlab.common.dto.AuthUserDto;
+import com.neonlab.common.dto.Authenticationdto;
+import com.neonlab.common.dto.VerificationReqDto;
 import com.neonlab.loginservice.apis.OtpApi;
-import com.neonlab.loginservice.dto.AuthUserDto;
-import com.neonlab.loginservice.dto.Authenticationdto;
-import com.neonlab.loginservice.dto.VerificationReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

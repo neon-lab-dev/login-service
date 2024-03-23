@@ -1,7 +1,8 @@
 package com.neonlab.loginservice.service.sms;
 
-import com.neonlab.loginservice.model.enums.SMSProvider;
-import com.neonlab.loginservice.model.enums.SmsRequest;
+
+import com.neonlab.common.dto.SMSProvider;
+import com.neonlab.common.dto.SmsRequest;
 
 public class InteractSmsService implements SmsService{
     @Override
