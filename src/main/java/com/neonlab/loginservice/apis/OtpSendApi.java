@@ -31,7 +31,7 @@ public class OtpApi {
         if(StringUtils.isNullOrEmpty(authenticationdto.getVerificationPurpose())){
             throw new RuntimeException("Purpose is Required");
         }
-        if(StringUtils.isNullOrEmpty(authenticationdto.getEmail()) && StringUtils.isNullOrEmpty(authenticationdto.getEmail())){
+        if(StringUtils.isNullOrEmpty(authenticationdto.getPhoneNo()) && StringUtils.isNullOrEmpty(authenticationdto.getEmail())){
             throw new RuntimeException("Phone or Email is Required");
         }
     }
@@ -43,7 +43,7 @@ public class OtpApi {
         if(StringUtils.isNullOrEmpty(verificationReqDto.getVerificationPurpose())){
             throw new RuntimeException("Purpose is Required");
         }
-        if(StringUtils.isNullOrEmpty(verificationReqDto.getEmail()) && StringUtils.isNullOrEmpty(verificationReqDto.getEmail())){
+        if(StringUtils.isNullOrEmpty(verificationReqDto.getPhoneNo()) && StringUtils.isNullOrEmpty(verificationReqDto.getEmail())){
             throw new RuntimeException("Phone or Email is Required");
         }
     }

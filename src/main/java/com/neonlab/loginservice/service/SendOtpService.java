@@ -29,6 +29,7 @@ public class SendOtpApi {
     private final SystemConfigRepository systemConfigRepository;
     private final OtpRepository otpRepository;
     public String send(Authenticationdto authenticationdto){
+        // check if otp already exists -> cancel previous otps
         Otp otpEntity = new Otp();
         otpEntity.setPurpose(authenticationdto.getVerificationPurpose());
 
@@ -67,8 +68,8 @@ public class SendOtpApi {
             String otp = OtpUtil.generateOtp(6);
             otpEntity.setServiceProvider(emailService.getProvider().name());
             otpEntity.setOtp(otp);
-            otpEntity.setCommunicatedTo(authenticationdto.getPhoneNo());
-            String expiryMinutes = systemConfigRepository.findByKey(Constants.OTP_EXPIRY_SMS).getValue();
+            otpEntity.setCommunicatedTo(authenticationdto.getEmail());
+            String expiryMinutes = systemConfigRepository.findByKey(Constants.OTP_EXPIRY_MAIL).getValue();
             otpEntity.setExpiryTime(DateUtils.getDateAfterNMinutes(Integer.parseInt(expiryMinutes)));
             otpEntity.setVerificationMode("EMAIL");
             //TODO: add request later

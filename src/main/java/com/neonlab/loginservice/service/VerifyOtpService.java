@@ -7,6 +7,7 @@ import com.neonlab.loginservice.repository.OtpRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -18,15 +19,17 @@ public class VerifyOtpApi {
     private final OtpRepository otpRepository;
     private final SignUpApi signUpApi;
 
+    @Transactional
     public AuthUserDto verify(VerificationReqDto verificationReqDto){
         // Only SignUp flow ->
         String communicatedTo = verificationReqDto.getPhoneNo() != null ? verificationReqDto.getPhoneNo() : verificationReqDto.getEmail();
 
-        Otp otp = otpRepository.findFirstByCommunicatedToAndStatusOrderByCreatedAt(communicatedTo, "SENT");
+        Otp otp = otpRepository.findFirstByCommunicatedToAndStatusOrderByCreatedAtDesc(communicatedTo, "SENT");
         if (otp == null || !otp.getPurpose().equals(verificationReqDto.getVerificationPurpose())) {
             throw new RuntimeException("No Otp pending to be verified for the user yet");
         }
         if (otp.getExpiryTime().before(new Date())) {
+            // mark otp as expired in DB // check status CANCELLED
             throw new RuntimeException("Otp is Expired, Please send new Otp");
         }
         if (!otp.getOtp().equals(verificationReqDto.getOtp())) {
