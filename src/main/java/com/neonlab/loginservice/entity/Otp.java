@@ -5,12 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
-@Table(name = "otp")
+@Table(name = "otp", indexes = {
+        @Index(name = "idx_communicated_to", columnList = "communicated_to"),
+        @Index(name = "idx_status", columnList = "status")
+})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Otp extends Generic {
 
     @Id
@@ -33,7 +37,7 @@ public class Otp extends Generic {
     private String status;
 
     @Column(name = "expiry_time")
-    private String expiryTime;
+    private Date expiryTime;
 
     @Column(name = "purpose")
     private String purpose;

@@ -6,19 +6,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "address")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Table(name = "address", indexes = {
+        @Index(name = "idx_user_id", columnList = "user_id"),
+        @Index(name = "idx_address_name", columnList = "address_name")
+})
 public class Address extends Generic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    @Column(name = "uuid")
-    private String UUID;
+    @Column(name = "user_id")
+    private String userId;
 
     @Column(name = "landmark")
     private String landMark;

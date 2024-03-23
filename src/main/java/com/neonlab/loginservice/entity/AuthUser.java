@@ -6,20 +6,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "auth_user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "auth_user", indexes = {
+        @Index(name = "idx_user_id", columnList = "user_id"),
+        @Index(name = "idx_user_name", columnList = "user_name"),
+        @Index(name = "idx_auth_type", columnList = "auth_type")
+})
 public class AuthUser extends Generic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    @Column(name = "uuid")
-    private String UUID;
+    @Column(name = "user_id")
+    private String userId;
 
-    @Column(name = "username")//index/ph no/email
+    @Column(name = "user_name")//index/ph no/email
     private String userName;
 
     @Column(name = "auth_type") //index/otp

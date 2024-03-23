@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Table(name = "user", indexes = {
+        @Index(name = "idx_primary_phone", columnList = "primary_phone_no"),
+        @Index(name = "idx_email", columnList = "email")
+})
 public class User extends Generic {
 
     @Id
@@ -23,10 +25,10 @@ public class User extends Generic {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "primary_phonenumber")
+    @Column(name = "primary_phone_no")
     private String primaryPhoneNo;// can't be null
 
-    @Column(name = "secondary_phonenumber")
+    @Column(name = "secondary_phone_no")
     private String secondaryPhoneNo;//optional
 
 

@@ -7,4 +7,5 @@ public class Authenticationdto {
 
     private String email;
     private String phoneNo;
+    private String verificationPurpose;
 }
