@@ -1,9 +1,9 @@
 package com.neonlab.loginservice.apis;
 
-import com.mysql.cj.util.StringUtils;
 import com.neonlab.common.dto.AuthUserDto;
 import com.neonlab.common.dto.VerificationReqDto;
-import com.neonlab.common.utils.UUIDEncryptor;
+import com.neonlab.common.utilities.StringUtil;
+import com.neonlab.common.utilities.UUIDEncryptor;
 import com.neonlab.loginservice.entity.AuthUser;
 import com.neonlab.loginservice.entity.User;
 import com.neonlab.loginservice.repository.AuthUserRepository;
@@ -38,11 +38,11 @@ public class SignUpApi {
         authUser.setUserId(user.getId());
         authUser.setCreatedAt(new Date());
         authUser.setModifiedAt(new Date());
-        if (!StringUtils.isNullOrEmpty(verificationReqDto.getPhoneNo())) {
+        if (!StringUtil.isNullOrEmpty(verificationReqDto.getPhoneNo())) {
             authUser.setPhoneVerified(true);
             authUser.setUserName(verificationReqDto.getPhoneNo());
         }
-        if (!StringUtils.isNullOrEmpty(verificationReqDto.getEmail())) {
+        if (!StringUtil.isNullOrEmpty(verificationReqDto.getEmail())) {
             authUser.setEmailVerified(true);
             authUser.setUserName(verificationReqDto.getEmail());
         }

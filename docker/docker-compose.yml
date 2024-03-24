@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+
+  mysqldb:
+    image: mysql:8.0
+    container_name: kasera-database
+    environment:
+      - MYSQL_DATABASE=kaseradb
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - 3306:3306

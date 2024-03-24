@@ -18,7 +18,7 @@ public class Audit extends Generic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(name = "raw_request")
     private String rawRequest;

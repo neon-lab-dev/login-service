@@ -17,7 +17,7 @@ public class SystemConfig extends Generic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(name = "config_key")
     private String key;

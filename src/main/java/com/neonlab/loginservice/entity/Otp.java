@@ -19,7 +19,7 @@ public class Otp extends Generic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(name = "communicated_to")
     private String communicatedTo;

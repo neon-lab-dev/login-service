@@ -1,13 +1,12 @@
 package com.neonlab.loginservice.service;
 
-import com.mysql.cj.util.StringUtils;
 import com.neonlab.common.config.Constants;
 import com.neonlab.common.dto.Authenticationdto;
 import com.neonlab.common.dto.EmailProvider;
 import com.neonlab.common.dto.SMSProvider;
 import com.neonlab.common.dto.SmsRequest;
-import com.neonlab.common.utils.DateUtils;
-import com.neonlab.common.utils.OtpUtil;
+import com.neonlab.common.utilities.DateUtils;
+import com.neonlab.common.utilities.OtpUtil;
 import com.neonlab.loginservice.entity.Otp;
 import com.neonlab.loginservice.entity.SystemConfig;
 import com.neonlab.loginservice.repository.OtpRepository;
@@ -86,7 +85,7 @@ public class SendOtpService {
     // to move in commons after moving entity & repo
     private SystemConfig getSystemConfig(String smsKey) {
         SystemConfig systemConfig = systemConfigRepository.findByKey(smsKey);
-        if (Objects.isNull(systemConfig) || StringUtils.isNullOrEmpty(systemConfig.getValue())) {
+        if (Objects.isNull(systemConfig)) {
             throw new IllegalArgumentException("No Config defined in system config for key  " + smsKey);
         }
         return systemConfig;
