@@ -1,7 +1,7 @@
 package com.neonlab.loginservice.apis;
 
 import com.neonlab.common.dto.AuthUserDto;
-import com.neonlab.common.dto.VerificationReqDto;
+import com.neonlab.common.dto.PhoneNoVerificationRequest;
 import com.neonlab.common.utilities.StringUtil;
 import com.neonlab.common.utilities.UUIDEncryptor;
 import com.neonlab.loginservice.entity.AuthUser;
@@ -23,12 +23,12 @@ public class SignUpApi {
     private final UserRepository userRepository;
     private final AuthUserRepository authUserRepository;
 
-    public AuthUserDto process(VerificationReqDto verificationReqDto){
-        User user = new User();
+    public AuthUserDto process(PhoneNoVerificationRequest phoneNoVerificationRequest){
+        /*User user = new User();
         user.setCreatedAt(new Date());
         user.setModifiedAt(new Date());
-        user.setEmail(verificationReqDto.getEmail());
-        user.setPrimaryPhoneNo(verificationReqDto.getPhoneNo());
+        user.setEmail(phoneNoVerificationRequest.getEmail());
+        user.setPrimaryPhoneNo(phoneNoVerificationRequest.getPhoneNo());
         // check for primary and secondary in login flow
         user = userRepository.save(user);
 
@@ -38,13 +38,13 @@ public class SignUpApi {
         authUser.setUserId(user.getId());
         authUser.setCreatedAt(new Date());
         authUser.setModifiedAt(new Date());
-        if (!StringUtil.isNullOrEmpty(verificationReqDto.getPhoneNo())) {
+        if (!StringUtil.isNullOrEmpty(phoneNoVerificationRequest.getPhoneNo())) {
             authUser.setPhoneVerified(true);
-            authUser.setUserName(verificationReqDto.getPhoneNo());
+            authUser.setUserName(phoneNoVerificationRequest.getPhoneNo());
         }
-        if (!StringUtil.isNullOrEmpty(verificationReqDto.getEmail())) {
+        if (!StringUtil.isNullOrEmpty(phoneNoVerificationRequest.getEmail())) {
             authUser.setEmailVerified(true);
-            authUser.setUserName(verificationReqDto.getEmail());
+            authUser.setUserName(phoneNoVerificationRequest.getEmail());
         }
         String jwt = "";
         try {
@@ -57,6 +57,7 @@ public class SignUpApi {
         authUser = authUserRepository.save(authUser);
         AuthUserDto authUserDto = new AuthUserDto();
         BeanUtils.copyProperties(authUser, authUserDto);
-        return authUserDto;
+        return authUserDto;*/
+        return null;
     }
 }

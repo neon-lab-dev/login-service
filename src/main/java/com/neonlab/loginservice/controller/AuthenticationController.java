@@ -1,9 +1,9 @@
 package com.neonlab.loginservice.controller;
 
 import com.neonlab.common.annotations.Loggable;
-import com.neonlab.common.dto.AuthUserDto;
-import com.neonlab.common.dto.Authenticationdto;
-import com.neonlab.common.dto.VerificationReqDto;
+import com.neonlab.common.dto.ApiOutput;
+import com.neonlab.common.dto.AuthenticationRequest;
+import com.neonlab.common.dto.PhoneNoVerificationRequest;
 import com.neonlab.common.expectations.InvalidInputException;
 import com.neonlab.loginservice.apis.OtpSendApi;
 import com.neonlab.loginservice.apis.OtpVerifyApi;
@@ -26,19 +26,20 @@ public class AuthenticationController {
 
 
     @PostMapping("/send-otp")
-    public ResponseEntity<?> sendOtp(@RequestBody Authenticationdto authenticationdto) throws InvalidInputException {
-        return new ResponseEntity<>(otpSendApi.send(authenticationdto), HttpStatus.OK);
+    public ResponseEntity<?> sendOtp(@RequestBody PhoneNoVerificationRequest request) throws InvalidInputException {
+        return new ResponseEntity<>(otpSendApi.send(request), HttpStatus.OK);
     }
 
-    @PostMapping("/verify-account")
-    public ResponseEntity<AuthUserDto> verifyAccount(@RequestBody VerificationReqDto verificationReqDto) {
-        return new ResponseEntity<>(otpVerifyApi.verify(verificationReqDto), HttpStatus.OK);
+    @PostMapping("/verify-otp")
+    public ApiOutput<?> verifyAccount(@RequestBody PhoneNoVerificationRequest phoneNoVerificationRequest)
+            throws InvalidInputException {
+        return otpVerifyApi.verify(phoneNoVerificationRequest);
     }
 
 
     //To Modify
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Authenticationdto loginDto) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest loginDto) {
         //return new ResponseEntity<>(userService.login(loginDto), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.OK);
     }
