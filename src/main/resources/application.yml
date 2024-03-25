@@ -1,0 +1,28 @@
+server:
+  port: 8801
+
+spring:
+  datasource:
+    driver: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/kaseradb
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: MYSQL
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "ritikagrawal1697@gmail.com"
+    password: "#Ritik123"
+    smtp:
+      auth: true
+      starttls:
+        enable: true
+
+interakt:
+  apiKey: key
+  apiSecret: password
+
+
