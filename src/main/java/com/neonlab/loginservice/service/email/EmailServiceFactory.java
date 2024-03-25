@@ -1,7 +1,7 @@
 package com.neonlab.loginservice.service.email;
 
 
-import com.neonlab.common.dto.EmailProvider;
+import com.neonlab.common.enums.EmailProvider;
 
 public class EmailServiceFactory {
 

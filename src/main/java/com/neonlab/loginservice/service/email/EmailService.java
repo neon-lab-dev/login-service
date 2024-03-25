@@ -1,6 +1,6 @@
 package com.neonlab.loginservice.service.email;
 
-import com.neonlab.common.dto.EmailProvider;
+import com.neonlab.common.enums.EmailProvider;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -32,7 +32,7 @@ public class OtpSendApi {
 
     //ToDO: create these in Abstract Api
     private void validateRequest(PhoneNoVerificationRequest authenticationRequest) throws InvalidInputException {
-        if(StringUtil.isNullOrEmpty(authenticationRequest.getVerificationPurpose())){
+        if(StringUtil.isNullOrEmpty(authenticationRequest.getPurpose())){
             throw new InvalidInputException("Purpose is Required");
         }
         if(StringUtil.isNullOrEmpty(authenticationRequest.getPhoneNo())){

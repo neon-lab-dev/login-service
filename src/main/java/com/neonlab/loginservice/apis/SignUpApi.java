@@ -1,63 +1,54 @@
 package com.neonlab.loginservice.apis;
 
-import com.neonlab.common.dto.AuthUserDto;
-import com.neonlab.common.dto.PhoneNoVerificationRequest;
+import com.neonlab.common.dto.ApiOutput;
+import com.neonlab.common.dto.SignUpRequest;
+import com.neonlab.common.dto.UserDto;
+import com.neonlab.common.entities.User;
+import com.neonlab.common.expectations.InvalidInputException;
+import com.neonlab.common.expectations.ServerException;
+import com.neonlab.common.services.UserService;
 import com.neonlab.common.utilities.StringUtil;
-import com.neonlab.common.utilities.UUIDEncryptor;
-import com.neonlab.loginservice.entity.AuthUser;
-import com.neonlab.loginservice.entity.User;
-import com.neonlab.loginservice.repository.AuthUserRepository;
-import com.neonlab.loginservice.repository.UserRepository;
+import com.neonlab.common.repositories.AuthUserRepository;
+import com.neonlab.common.repositories.UserRepository;
+import com.neonlab.loginservice.service.SignupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class SignUpApi {
 
-    private final UserRepository userRepository;
-    private final AuthUserRepository authUserRepository;
+    private final SignupService signUpService;
 
-    public AuthUserDto process(PhoneNoVerificationRequest phoneNoVerificationRequest){
-        /*User user = new User();
-        user.setCreatedAt(new Date());
-        user.setModifiedAt(new Date());
-        user.setEmail(phoneNoVerificationRequest.getEmail());
-        user.setPrimaryPhoneNo(phoneNoVerificationRequest.getPhoneNo());
-        // check for primary and secondary in login flow
-        user = userRepository.save(user);
+    private static final String SUCCESS = "User %s signed up successfully";
 
-
-        AuthUser authUser = new AuthUser();
-        authUser.setAuthType("OTP");
-        authUser.setUserId(user.getId());
-        authUser.setCreatedAt(new Date());
-        authUser.setModifiedAt(new Date());
-        if (!StringUtil.isNullOrEmpty(phoneNoVerificationRequest.getPhoneNo())) {
-            authUser.setPhoneVerified(true);
-            authUser.setUserName(phoneNoVerificationRequest.getPhoneNo());
-        }
-        if (!StringUtil.isNullOrEmpty(phoneNoVerificationRequest.getEmail())) {
-            authUser.setEmailVerified(true);
-            authUser.setUserName(phoneNoVerificationRequest.getEmail());
-        }
-        String jwt = "";
-        try {
-            jwt = UUIDEncryptor.encryptUUID(user.getId());
-        } catch (Exception e) {
-            log.error("Error while encryting uuid");
-            throw new RuntimeException(e.getMessage());
-        }
-        authUser.setJWTtoken(jwt);
-        authUser = authUserRepository.save(authUser);
-        AuthUserDto authUserDto = new AuthUserDto();
-        BeanUtils.copyProperties(authUser, authUserDto);
-        return authUserDto;*/
-        return null;
+    public ApiOutput<UserDto> process(SignUpRequest request) throws InvalidInputException, ServerException {
+        validate(request);
+        return new ApiOutput<>(HttpStatus.OK.value(),
+                String.format(SUCCESS, request.getPrimaryPhoneNo()),
+                signUpService.registerUser(request));
     }
+
+    private void validate(SignUpRequest request) throws InvalidInputException {
+        if (StringUtil.isNullOrEmpty(request.getName())){
+            throw new InvalidInputException("Name of the user is mandatory.");
+        }
+        if (StringUtil.isNullOrEmpty(request.getEmail())){
+            throw new InvalidInputException("Email of the user is mandatory.");
+        }
+        if (StringUtil.isNullOrEmpty(request.getPrimaryPhoneNo())){
+            throw new InvalidInputException("Primary Phone number of the user is mandatory.");
+        }
+        if (StringUtil.isNullOrEmpty(request.getAuthId())){
+            throw new InvalidInputException("AuthId is not available");
+        }
+        if (signUpService.isAlreadySignedUp(request)){
+            throw new InvalidInputException("User already exists.");
+        }
+
+    }
+
 }

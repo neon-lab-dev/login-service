@@ -2,18 +2,18 @@ package com.neonlab.loginservice.service;
 
 import com.neonlab.common.config.Constants;
 import com.neonlab.common.dto.*;
-import com.neonlab.common.dto.EmailProvider;
-import com.neonlab.common.dto.SMSProvider;
 import com.neonlab.common.enums.OtpStatus;
+import com.neonlab.common.enums.SMSProvider;
+import com.neonlab.common.enums.VerificationMode;
 import com.neonlab.common.expectations.ServerException;
+import com.neonlab.common.services.AuthUserService;
+import com.neonlab.common.services.UserService;
 import com.neonlab.common.utilities.DateUtils;
 import com.neonlab.common.utilities.OtpUtil;
-import com.neonlab.loginservice.entity.Otp;
-import com.neonlab.loginservice.entity.SystemConfig;
-import com.neonlab.loginservice.repository.OtpRepository;
-import com.neonlab.loginservice.repository.SystemConfigRepository;
-import com.neonlab.loginservice.service.email.EmailService;
-import com.neonlab.loginservice.service.email.EmailServiceFactory;
+import com.neonlab.common.entities.Otp;
+import com.neonlab.common.entities.SystemConfig;
+import com.neonlab.common.repositories.OtpRepository;
+import com.neonlab.common.repositories.SystemConfigRepository;
 import com.neonlab.loginservice.service.sms.SmsService;
 import com.neonlab.loginservice.service.sms.SmsServiceFactory;
 import lombok.AllArgsConstructor;
@@ -23,20 +23,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.neonlab.common.enums.OtpStatus.*;
+import static com.neonlab.common.enums.OtpStatus.EXPIRED;
+
 @Service
 @AllArgsConstructor
 public class OtpService {
 
     private final SystemConfigRepository systemConfigRepository;
     private final OtpRepository otpRepository;
+    private final AuthUserService authUserService;
 
-    private static final String OTP_VERIFIED = "OTP verified successfully for %s";
     private static final String OTP_SENT = "OTP send successfully to %s";
 
     public String send(PhoneNoVerificationRequest request) throws ServerException {
-        // check if otp already exists -> cancel previous otps
         Otp otpEntity = new Otp();
-        otpEntity.setPurpose(request.getVerificationPurpose());
+        otpEntity.setPurpose(request.getPurpose());
 
         if (Objects.nonNull(request.getPhoneNo())) {
             SystemConfig systemConfig = getSystemConfig(Constants.SMS_KEY);
@@ -54,19 +56,19 @@ public class OtpService {
             otpEntity.setCommunicatedTo(request.getPhoneNo());
             String expiryMinutes = systemConfigRepository.findByKey(Constants.OTP_EXPIRY_SMS).getValue();
             otpEntity.setExpiryTime(DateUtils.getDateAfterNMinutes(Integer.parseInt(expiryMinutes)));
-            otpEntity.setVerificationMode("SMS");
+            otpEntity.setVerificationMode(VerificationMode.PHONE);
             otpEntity.setCreatedAt(new Date());
             otpEntity.setModifiedAt(new Date());
 
             try {
                 smsService.sendSMS(smsRequest);
             } catch (Exception e) {
-                otpEntity.setStatus(OtpStatus.FAILED.name());
+                otpEntity.setStatus(FAILED);
                 otpRepository.save(otpEntity);
                 throw new ServerException("Error while sending sms : " + e.getMessage());
             }
         }
-        otpEntity.setStatus(OtpStatus.SENT.name());
+        otpEntity.setStatus(SENT);
         otpRepository.save(otpEntity);
         return String.format(OTP_SENT, request.getPhoneNo());
     }
@@ -82,15 +84,15 @@ public class OtpService {
 
 
     @Transactional
-    public String verify(PhoneNoVerificationRequest request) throws ServerException {
+    public VerificationResponse verify(PhoneNoVerificationRequest request) throws ServerException {
         String communicatedTo = request.getPhoneNo();
-        var otp = fetchOtpByCommunicatedToAndStatusAndPurpose(communicatedTo, OtpStatus.SENT.name(), request.getVerificationPurpose());
+        var otp = fetchOtpByCommunicatedToAndStatusAndPurpose(communicatedTo, SENT, request.getPurpose());
         if (isValid(otp, request)){
-            // verify Otp
-            otp.setStatus(OtpStatus.VERIFIED.name());
+            otp.setStatus(VERIFIED);
             otp.setModifiedAt(new Date());
             otpRepository.save(otp);
-            return String.format(OTP_VERIFIED, communicatedTo);
+            var auth = authUserService.createAuthUser(otp, request);
+            return new VerificationResponse(auth.getId(), VERIFIED.name());
         }
        throw handleVerificationException(otp, request);
     }
@@ -98,7 +100,7 @@ public class OtpService {
     private ServerException handleVerificationException(Otp otp, PhoneNoVerificationRequest request) throws ServerException {
         if (otp.getExpiryTime().before(new Date())){
             otp.setModifiedAt(new Date());
-            otp.setStatus(OtpStatus.FAILED.name());
+            otp.setStatus(EXPIRED);
             otpRepository.save(otp);
             return new ServerException("Otp Expired. Please re-send new otp.");
         }
@@ -112,8 +114,8 @@ public class OtpService {
         return (otp.getExpiryTime().after(new Date()) && Objects.equals(request.getOtp(), otp.getOtp()));
     }
 
-    public Otp fetchOtpByCommunicatedToAndStatusAndPurpose(String communicatedTo, String status, String purpose) throws ServerException {
-        var retVal = otpRepository.findFirstByCommunicatedToAndStatusAndPurposeOrderByCreatedAtDesc(communicatedTo, OtpStatus.SENT.name(), purpose);
+    public Otp fetchOtpByCommunicatedToAndStatusAndPurpose(String communicatedTo, OtpStatus status, String purpose) throws ServerException {
+        var retVal = otpRepository.findFirstByCommunicatedToAndStatusAndPurposeOrderByCreatedAtDesc(communicatedTo, SENT, purpose);
         if (retVal.isPresent()){
             return retVal.get();
         }

@@ -1,7 +1,7 @@
 package com.neonlab.loginservice.service.sms;
 
 
-import com.neonlab.common.dto.SMSProvider;
+import com.neonlab.common.enums.SMSProvider;
 
 public class SmsServiceFactory {
     public static SmsService getSmsService(SMSProvider provider) {
