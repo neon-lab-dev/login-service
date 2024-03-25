@@ -35,6 +35,9 @@ public class OtpSendApi {
         if(StringUtil.isNullOrEmpty(authenticationRequest.getPurpose())){
             throw new InvalidInputException("Purpose is Required");
         }
+        if(StringUtil.isNullOrEmpty(authenticationRequest.getMode())){
+            throw new InvalidInputException("Mode is Required");
+        }
         if(StringUtil.isNullOrEmpty(authenticationRequest.getPhoneNo())){
             throw new InvalidInputException("Phone is Required");
         }

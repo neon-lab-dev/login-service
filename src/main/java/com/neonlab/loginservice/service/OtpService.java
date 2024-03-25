@@ -56,7 +56,7 @@ public class OtpService {
             otpEntity.setCommunicatedTo(request.getPhoneNo());
             String expiryMinutes = systemConfigRepository.findByKey(Constants.OTP_EXPIRY_SMS).getValue();
             otpEntity.setExpiryTime(DateUtils.getDateAfterNMinutes(Integer.parseInt(expiryMinutes)));
-            otpEntity.setVerificationMode(VerificationMode.PHONE);
+            otpEntity.setVerificationMode(VerificationMode.valueOf(request.getMode()));
             otpEntity.setCreatedAt(new Date());
             otpEntity.setModifiedAt(new Date());
 
@@ -115,7 +115,7 @@ public class OtpService {
     }
 
     public Otp fetchOtpByCommunicatedToAndStatusAndPurpose(String communicatedTo, OtpStatus status, String purpose) throws ServerException {
-        var retVal = otpRepository.findFirstByCommunicatedToAndStatusAndPurposeOrderByCreatedAtDesc(communicatedTo, SENT, purpose);
+        var retVal = otpRepository.findFirstByCommunicatedToAndStatusAndPurposeOrderByCreatedAtDesc(communicatedTo, status, purpose);
         if (retVal.isPresent()){
             return retVal.get();
         }
