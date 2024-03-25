@@ -4,12 +4,8 @@ import com.neonlab.common.annotations.Loggable;
 import com.neonlab.common.dto.*;
 import com.neonlab.common.expectations.InvalidInputException;
 import com.neonlab.common.expectations.ServerException;
-import com.neonlab.loginservice.apis.LoginStatusApi;
-import com.neonlab.loginservice.apis.OtpSendApi;
-import com.neonlab.loginservice.apis.OtpVerifyApi;
-import com.neonlab.loginservice.apis.SignUpApi;
+import com.neonlab.loginservice.apis.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +19,7 @@ public class AuthenticationController {
     private final OtpVerifyApi otpVerifyApi;
     private final SignUpApi signUpApi;
     private final LoginStatusApi loginStatusApi;
+    private final LoginApi loginApi;
 
 
     @PostMapping("/send-otp")
@@ -39,7 +36,6 @@ public class AuthenticationController {
 
     @PutMapping("/signup")
     public ApiOutput<?> signup(@RequestBody SignUpRequest request) throws InvalidInputException, ServerException {
-        //return new ResponseEntity<>(userService.login(loginDto), HttpStatus.OK);
         return signUpApi.process(request);
     }
 
@@ -51,9 +47,8 @@ public class AuthenticationController {
 
     //To Modify
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest loginDto) {
-        //return new ResponseEntity<>(userService.login(loginDto), HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ApiOutput<?> login(@RequestBody LoginRequest request) throws InvalidInputException {
+        return loginApi.process(request);
     }
 
 

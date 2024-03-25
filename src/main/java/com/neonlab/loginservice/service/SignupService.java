@@ -1,22 +1,17 @@
 package com.neonlab.loginservice.service;
 
 import com.neonlab.common.annotations.Loggable;
-import com.neonlab.common.constants.GlobalConstants;
 import com.neonlab.common.dto.SignUpRequest;
 import com.neonlab.common.dto.UserDto;
-import com.neonlab.common.entities.AuthUser;
-import com.neonlab.common.entities.User;
-import com.neonlab.common.enums.VerificationMode;
 import com.neonlab.common.expectations.InvalidInputException;
 import com.neonlab.common.expectations.ServerException;
 import com.neonlab.common.services.AuthUserService;
 import com.neonlab.common.services.UserService;
-import com.neonlab.common.utilities.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.neonlab.common.constants.GlobalConstants.ERROR_OCCURED;
+import static com.neonlab.common.constants.GlobalConstants.ERROR_OCCURRED;
 
 @Slf4j
 @Service
@@ -35,7 +30,7 @@ public class SignupService {
             authUserService.save(auth);
             return UserDto.parse(user);
         } catch (InvalidInputException e) {
-            log.warn(ERROR_OCCURED, e.getMessage());
+            log.warn(ERROR_OCCURRED, e.getMessage());
             throw new ServerException(String.format("The user %s is not authenticated or the authId is incorrect.", request.getName()));
         }
     }
@@ -45,7 +40,7 @@ public class SignupService {
             var user = userService.fetchByPrimaryPhoneNo(request.getPrimaryPhoneNo());
             return true;
         } catch (InvalidInputException e) {
-            log.warn(ERROR_OCCURED, e.getMessage());
+            log.warn(ERROR_OCCURRED, e.getMessage());
             return false;
         }
     }
