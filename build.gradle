@@ -26,7 +26,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'//added for java mailsender
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	//database dependency
+	//runtimeOnly 'com.mysql:mysql-connector-j' //default/production
+
+	//aws-specific dependency
+	implementation("org.xerial:sqlite-jdbc:3.42.0.0")
+	implementation("org.hibernate.orm:hibernate-community-dialects:6.4.1.Final")
+	//aws-specific dependency
+
+	//database dependency
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

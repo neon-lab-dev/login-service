@@ -2,15 +2,16 @@ server:
   port: 8801
 
 spring:
-  datasource:
-    driver: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST_PORT}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
-    database: MYSQL
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+  hibernate:
+    hbm2ddl:
+      auto: update
+    show_sql: true
+
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -25,4 +26,9 @@ interakt:
   apiKey: key
   apiSecret: password
 
+sqlite:
+  driver: org.sqlite.JDBC
+  url: jdbc:sqlite:../kasera.db
+  username: root
+  password: password
 
