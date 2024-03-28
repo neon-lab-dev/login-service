@@ -28,7 +28,7 @@ interakt:
 
 sqlite:
   driver: org.sqlite.JDBC
-  url: jdbc:sqlite:../kasera.db
+  url: jdbc:sqlite:${DB_PATH}
   username: root
   password: password
 
