@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/kaseradb
-    username: root
-    password: password
+    url: jdbc:mysql://${DB_HOST_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,7 +15,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: "ritikagrawal1697@gmail.com"
-    password: "#Ritik123"
+    password: "#Ritik125"
     smtp:
       auth: true
       starttls:
